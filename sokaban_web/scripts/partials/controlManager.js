@@ -38,10 +38,14 @@ define([
                 leftValue = Counts.keyCode[document.querySelector(
                     '[name="left"]').value.toUpperCase()];
 
-            keydownCommands[upValue] = 'moveUp';
-            keydownCommands[rightValue] = 'moveRight';
-            keydownCommands[downValue] = 'moveDown';
-            keydownCommands[leftValue] = 'moveLeft';
+            if (upValue && downValue && rightValue && leftValue) {
+                keydownCommands[upValue] = 'moveUp';
+                keydownCommands[rightValue] = 'moveRight';
+                keydownCommands[downValue] = 'moveDown';
+                keydownCommands[leftValue] = 'moveLeft';
+            } else {
+                alert('按键配置有误，请重新配置');
+            }
         };
     };
 
