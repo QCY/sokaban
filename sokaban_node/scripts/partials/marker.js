@@ -1,4 +1,4 @@
-var Event = require('./event.js');
+var Event = require('.././lib/event.js');
 
 var Marker = function() {
     this.position = {};

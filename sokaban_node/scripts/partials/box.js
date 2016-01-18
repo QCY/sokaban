@@ -1,5 +1,5 @@
 var MoveableMarker = require('./marker.js').MoveableMarker;
-var Event = require('./event.js');
+var Event = require('.././lib/event.js');
 
 var Box = function(id) {
     MoveableMarker.apply(this);

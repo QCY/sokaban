@@ -1,5 +1,5 @@
 var MoveableMarker = require('./marker.js').MoveableMarker;
-var Event = require('./event.js');
+var Event = require('.././lib/event.js');
 
 var Player = function(matrix) {
     this.gameBoxs = [];
