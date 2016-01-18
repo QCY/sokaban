@@ -26,14 +26,15 @@ define(['lib/event'], function(Event) {
     };
 
     MapManager.prototype.renderMap = function() {
-        document.body.innerHTML = '';
+        var gameCanvas = document.getElementById('game');
+        gameCanvas.innerHTML = '';
         for (var i = 0, yLen = this.mapMatrix.length; i < yLen; i++) {
             var div = document.createElement('div');
             for (var j = 0, xLen = this.mapMatrix[i].length; j <
                 xLen; j++) {
                 div.innerHTML += this.mapMatrix[i][j];
             }
-            document.body.appendChild(div);
+            gameCanvas.appendChild(div);
         }
     };
 

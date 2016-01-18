@@ -9,10 +9,6 @@ require([
 ], function(Event, MapManager, FileManager, ControlManager, Player,
     Target, Box) {
 
-    var controlManager = (function() {
-        var keydownControler = new ControlManager.KeydownControler();
-    })();
-
     var gameManager = (function() {
 
         var player, mapManager, target;
@@ -77,6 +73,11 @@ require([
 
     Event.installEvent(gameManager);
     gameManager.listen('gameOver', gameManager.gameOver);
-    gameManager.gameInit();
+
+    var controlManager = (function() {
+        var keydownControler = new ControlManager.KeydownControler();
+        keydownControler.configKey();
+        gameManager.gameInit();
+    })();
 
 });
