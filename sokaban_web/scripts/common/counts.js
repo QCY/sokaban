@@ -27,6 +27,10 @@ define(function() {
             'X': 88,
             'Y': 89,
             'Z': 90
-        }
+        },
+        mapPath: './maps/',
+        fileLists: [
+            'map1.txt', 'map2.txt', 'map3.txt', 'map4.txt'
+        ]
     };
 });

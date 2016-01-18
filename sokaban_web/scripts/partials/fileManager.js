@@ -1,11 +1,11 @@
-define(function() {
+define([
+    'common/counts'
+], function(Counts) {
 
     var text,
         fileIndex = 0,
-        path = './maps/',
-        fileLists = [
-            'map1.txt', 'map2.txt', 'map3.txt', 'map4.txt'
-        ];
+        path = Counts.mapPath,
+        fileLists = Counts.fileLists;
 
     var loadFile = function() {
         var request = new XMLHttpRequest();
