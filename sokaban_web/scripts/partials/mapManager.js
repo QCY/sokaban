@@ -1,6 +1,9 @@
 define(['lib/event'], function(Event) {
 
     var MapManager = function() {
+        var can = document.getElementById('games');
+        this.ctx = can.getContext('2d');
+
         this.mapMatrix = [];
         this.playerPosition = {};
         this.boxPosition = [];
@@ -26,15 +29,16 @@ define(['lib/event'], function(Event) {
     };
 
     MapManager.prototype.renderMap = function() {
-        var gameCanvas = document.getElementById('game');
-        gameCanvas.innerHTML = '';
+        var
         for (var i = 0, yLen = this.mapMatrix.length; i < yLen; i++) {
-            var div = document.createElement('div');
             for (var j = 0, xLen = this.mapMatrix[i].length; j <
                 xLen; j++) {
-                div.innerHTML += this.mapMatrix[i][j];
+                if (this.mapMatrix[i][j] === '#') {
+                    this.ctx.drawImage(starPic, this.picNo * 7, 0,
+                        7, 7, this.x, this.y, 7, 7);
+                }
+
             }
-            gameCanvas.appendChild(div);
         }
     };
 

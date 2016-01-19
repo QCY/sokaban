@@ -1,0 +1,15 @@
+#game {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0.5em;
+}
+
+#keyConfig {
+    width: 110px;
+    margin: 15px 0;
+}
+
+#keyConfig input {
+    width: 65px;
+    margin-bottom: 5px;
+}
