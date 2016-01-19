@@ -16,7 +16,7 @@ define([
             },
             '0': function(state, player, nextPosition) {
                 player.setPosition(nextPosition);
-                this.trigger('onMatrixChange', player);
+                this.trigger('onMatrixChange', state);
             },
             'B': function(state, player, nextPosition, box) {
                 box.moveControl(state, player);

@@ -4,15 +4,34 @@ define([
 
     var canvas = document.getElementById('gameCanvas');
 
+    var states = {
+        'moveUp': {
+            x: 0,
+            y: 200
+        },
+        'moveDown': {
+            x: 0,
+            y: 0
+        },
+        'moveRight': {
+            x: 0,
+            y: 134
+        },
+        'moveLeft': {
+            x: 0,
+            y: 70
+        },
+    };
+
     var wallPic = new Image();
     var targetPic = new Image();
     var boxPic = new Image();
     var personPic = new Image();
     var blankPic = new Image();
     wallPic.src = './images/wall.png';
-    targetPic.src = './images/target.png';
+    targetPic.src = './images/target2.png';
     boxPic.src = './images/box.png';
-    personPic.src = './images/person.png';
+    personPic.src = './images/QQTang.png';
     blankPic.src = './images/blank.png';
 
     var MapManager = function() {
@@ -21,6 +40,7 @@ define([
         this.mapMatrix = [];
         this.playerPosition = {};
         this.boxPosition = [];
+        this.state = null;
 
         this.drawStrategies = {
             '#': function(i, j) {
@@ -32,12 +52,13 @@ define([
                     40, 40, 40);
             },
             'P': function(i, j) {
-                this.ctx.drawImage(personPic, j * 40, i *
+                this.ctx.drawImage(personPic, this.state.x,
+                    this.state.y, 55, 62, j * 40, i *
                     40, 40, 40);
             },
             'B': function(i, j) {
-                this.ctx.drawImage(boxPic, j * 40, i *
-                    40, 40, 40);
+                this.ctx.drawImage(boxPic, 0, 0, 40, 40, j *
+                    40 + 4, i * 40 + 4, 32, 32);
             },
             '0': function(i, j) {
                 this.ctx.drawImage(blankPic, j * 40, i *
@@ -59,7 +80,8 @@ define([
         this.boxPosition.push(position);
     };
 
-    MapManager.prototype.render = function() {
+    MapManager.prototype.render = function(state) {
+        this.setState(state);
         this.renderMap();
         this.renderPerson();
         this.renderBox();
@@ -91,18 +113,16 @@ define([
         }
     };
 
-    MapManager.prototype.renderWithPosition = function(position, icon) {
+    MapManager.prototype.renderWithPosition = function(position, icon,
+        state) {
         var x = position.x,
             y = position.y;
         this.drawStrategies[icon].call(this, x, y);
     };
 
-    MapManager.prototype.replaceStringWithIndex = function(string,
-        index, str) {
-        var first = string.slice(0, index),
-            last = string.slice(index + 1);
-
-        return first + str + last;
+    MapManager.prototype.setState = function(state) {
+        state = typeof(state) === 'string' ? state : '';
+        this.state = states[state || 'moveDown'];
     };
 
     return MapManager;

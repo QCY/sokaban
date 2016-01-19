@@ -14,10 +14,10 @@ define([
             '#': function() {
                 return;
             },
-            '0': function(player, box, nextPosition) {
+            '0': function(player, box, nextPosition, state) {
                 player.setPosition(box.position);
                 box.setPosition(nextPosition);
-                this.trigger('onMatrixChange', player);
+                this.trigger('onMatrixChange', state);
                 this.trigger('boxOverTarget', box);
             },
             'B': function() {
@@ -41,8 +41,7 @@ define([
             nextMarker = player.getMarker(nextPosition);
 
         boxMoveStrategies[nextMarker.attribute || nextMarker](
-            player, this,
-            nextPosition);
+            player, this, nextPosition, state);
     }
 
     return Box;

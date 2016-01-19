@@ -45,8 +45,7 @@ require([
             player.listen('onMove', player.moveControl.bind(
                 player));
             mapManager.listen('onMatrixChange', mapManager.render
-                .bind(
-                    mapManager));
+                .bind(mapManager));
             target.listen('boxOnTarget', target.addBox.bind(
                 target));
             target.listen('boxOverTarget', target.removeBox
