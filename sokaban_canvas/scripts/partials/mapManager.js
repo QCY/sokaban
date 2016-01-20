@@ -35,7 +35,6 @@ define([
     blankPic.src = './images/blank.png';
 
     var MapManager = function() {
-
         this.ctx = canvas.getContext('2d');
         this.mapMatrix = [];
         this.playerPosition = {};

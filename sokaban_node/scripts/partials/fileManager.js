@@ -1,4 +1,3 @@
-var fs = require('fs');
 var Counts = require('.././common/counts');
 
 var fileManager = (function() {
@@ -8,8 +7,13 @@ var fileManager = (function() {
         fileLists = Counts.fileLists;
 
     var loadFile = function() {
-        text = fs.readFileSync(path + fileLists[fileIndex], 'utf8');
-        fileIndex = (fileIndex + 1 >= fileLists.length) ? 0 :
+        var request = new XMLHttpRequest();
+        request.open('GET', path + fileLists[fileIndex],
+            false);
+        request.send(null);
+        text = request.responseText;
+        fileIndex = (fileIndex + 1 >= fileLists.length) ?
+            0 :
             fileIndex + 1;
     };
 
