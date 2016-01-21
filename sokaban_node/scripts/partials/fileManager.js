@@ -1,24 +1,11 @@
 var Counts = require('.././common/counts');
 
-var fileManager = (function() {
-    var text,
-        fileIndex = 0,
-        path = Counts.mapPath,
-        fileLists = Counts.fileLists;
+var fileManager = function() {
+    this.text;
+    this.fileIndex = 0;
 
-    var loadFile = function() {
-        var request = new XMLHttpRequest();
-        request.open('GET', path + fileLists[fileIndex],
-            false);
-        request.send(null);
-        text = request.responseText;
-        fileIndex = (fileIndex + 1 >= fileLists.length) ?
-            0 :
-            fileIndex + 1;
-    };
-
-    var getMapMatrix = function() {
-        var mapText = text.split('*')[0],
+    this.getMapMatrix = function() {
+        var mapText = this.text.split('*')[0],
             matrix = [];
         mapText.split(/\r?\n/).forEach(function(line) {
             var lineArr = [];
@@ -33,16 +20,20 @@ var fileManager = (function() {
         return matrix;
     };
 
-    var getMarkerObj = function() {
-        var markerText = text.split('*')[1];
+    this.getMarkerObj = function() {
+        var markerText = this.text.split('*')[1];
         return JSON.parse(markerText);
     };
 
-    return {
-        loadFile: loadFile,
-        getMapMatrix: getMapMatrix,
-        getMarkerObj: getMarkerObj
-    }
-})();
+};
+
+fileManager.prototype.loadFile = function() {
+    var fs = require('fs');
+    var path = Counts.nodeMapPath,
+        fileLists = Counts.fileLists;
+    this.text = fs.readFileSync(path + fileLists[this.fileIndex], 'utf8');
+    this.fileIndex = (this.fileIndex + 1 >= fileLists.length) ?
+        0 : this.fileIndex + 1;
+};
 
 module.exports = fileManager;

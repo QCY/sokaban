@@ -1,27 +1,29 @@
 var Event = require('./lib/event.js');
 var Target = require('./partials/target.js');
-var MapManager = require('./partials/mapManager.js');
-var FileManager = require('./partials/fileManager.js');
-var ControlManager = require('./partials/controlManager.js');
+var MapManager = require('./partials/MapManagerForWeb.js');
+var FileManager = require('./partials/fileManagerForWeb.js');
+var ControlManager = require('./partials/controlManagerForWeb.js');
 var Player = require('./partials/player.js');
 var Box = require('./partials/box.js');
 
 var controlManager = (function() {
     var controler = new ControlManager.keydownControler();
+    controler.control();
 })();
 
 var gameManager = (function() {
 
-    var player, mapManager, target;
+    var player, mapManager, target,
+        fileManager = new FileManager();
 
     var gameInit = function() {
         target = new Target();
         mapManager = new MapManager();
 
-        FileManager.loadFile();
+        fileManager.loadFile();
 
-        var markerObj = FileManager.getMarkerObj(),
-            mapMatrix = FileManager.getMapMatrix();
+        var markerObj = fileManager.getMarkerObj(),
+            mapMatrix = fileManager.getMapMatrix();
 
         target.setLength(markerObj.B.length);
 

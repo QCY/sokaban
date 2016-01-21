@@ -1,5 +1,6 @@
 var counts = {
-    mapPath: 'maps/',
+    nodeMapPath: '.././maps/',
+    webMapPath: './maps/',
     fileLists: [
         'map1.txt', 'map2.txt', 'map3.txt', 'map4.txt', 'map5.txt'
     ]
