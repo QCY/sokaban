@@ -40,6 +40,7 @@ define([
         this.playerPosition = {};
         this.boxPosition = [];
         this.state = null;
+        this.personState = 0;
 
         this.drawStrategies = {
             '#': function(i, j) {
@@ -50,10 +51,13 @@ define([
                 this.ctx.drawImage(targetPic, j * 40, i *
                     40, 40, 40);
             },
-            'P': function(i, j) {
-                this.ctx.drawImage(personPic, this.state.x,
-                    this.state.y, 55, 62, j * 40, i *
-                    40, 40, 40);
+            'P': function(i, j, icon) {
+                this.ctx.drawImage(personPic, this.state.x +
+                    100 * this.personState, this.state.y,
+                    55, 62, j * 40, i * 40, 40, 40);
+
+                this.personState = (this.personState + 1 >=
+                    4) ? 0 : this.personState + 1;
             },
             'B': function(i, j) {
                 this.ctx.drawImage(boxPic, 0, 0, 40, 40, j *
@@ -80,10 +84,13 @@ define([
     };
 
     MapManager.prototype.render = function(state) {
+
         this.setState(state);
         this.renderMap();
         this.renderPerson();
         this.renderBox();
+
+        //window.requestAnimationFrame(this.render.bind(this, state));
     };
 
     MapManager.prototype.renderMap = function() {
@@ -116,7 +123,8 @@ define([
         state) {
         var x = position.x,
             y = position.y;
-        this.drawStrategies[icon].call(this, x, y);
+
+        this.drawStrategies[icon].call(this, x, y, icon);
     };
 
     MapManager.prototype.setState = function(state) {

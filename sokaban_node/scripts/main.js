@@ -50,6 +50,7 @@ var gameManager = (function() {
     };
 
     var addListener = function() {
+        //绑定事件
         player.listen('onMove', player.moveControl.bind(player));
         mapManager.listen('onMatrixChange', mapManager.render.bind(
             mapManager));
@@ -58,6 +59,7 @@ var gameManager = (function() {
     };
 
     var removeListener = function() {
+        //解除事件
         player.remove('onMove', player.moveControl);
         mapManager.remove('onMatrixChange', mapManager.render);
         target.remove('boxOnTarget', target.addBox);

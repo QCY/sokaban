@@ -12,13 +12,20 @@ define([
 
     var KeydownControler = function(commands) {
         Event.installEvent(this);
-
+        var timer;
         document.onkeydown = function(e) {
 
             var keyCode = e.keyCode,
                 state = keydownCommands[keyCode];
             if (state) {
-                this.trigger('onMove', state);
+                if (timer) {
+                    return;
+                }
+                timer = setTimeout(function() {
+                    this.trigger('onMove', state);
+                    clearTimeout(timer);
+                    timer = null;
+                }.bind(this), 100);
             }
 
         }.bind(this);
