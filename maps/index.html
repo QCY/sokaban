@@ -8,11 +8,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="stylesheet" href="style/common.css">
 <head>
-<title>sokaban</title>
+<title>study</title>
 </head>
 <body>
 
-<section id="game"></section>
+<canvas id="gameCanvas" width="600" height="400"></canvas>
 <section id="keyConfig">
     <label for="">上: <input type="text" name="up"></label>
     <label for="">下: <input type="text" name="down"></label>
@@ -20,6 +20,7 @@
     <label for="">右: <input type="text" name="right"></label>
     <button type="button" name="button">确定</button>
 </section>
-<script src="scripts/compiled.js"></script>
+<script src="scripts/require-config.js"></script>
+<script src="scripts/require.js" data-main="main"></script>
 </body>
 </html>

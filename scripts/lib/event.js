@@ -1,4 +1,4 @@
-define(function() {
+var Event = (function() {
     var event = {
         clientList: {},
         listen: function(key, fn) {
@@ -38,5 +38,6 @@ define(function() {
 
     return {
         installEvent: installEvent
-    }
-});
+    };
+})();
+module.exports = Event;

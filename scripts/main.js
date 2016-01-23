@@ -1,82 +1,77 @@
-require([
-    'lib/event',
-    'partials/mapManager',
-    'partials/fileManager',
-    'partials/controlManager',
-    'partials/player',
-    'partials/target',
-    'partials/box',
-], function(Event, MapManager, FileManager, ControlManager, Player,
-    Target, Box) {
+var Event = require('./lib/event.js');
+var Target = require('./partials/target.js');
+var MapManager = require('./partials/MapManagerForWeb.js');
+var FileManager = require('./partials/fileManagerForWeb.js');
+var ControlManager = require('./partials/controlManagerForWeb.js');
+var Player = require('./partials/player.js');
+var Box = require('./partials/box.js');
 
-    var gameManager = (function() {
+var controlManager = (function() {
+    var controler = new ControlManager.keydownControler();
+    controler.control();
+})();
 
-        var player, mapManager, target;
+var gameManager = (function() {
 
-        var gameInit = function() {
-            target = new Target();
-            mapManager = new MapManager();
+    var player, mapManager, target,
+        fileManager = new FileManager();
 
-            FileManager.loadFile();
+    var gameInit = function() {
+        target = new Target();
+        mapManager = new MapManager();
 
-            var markerObj = FileManager.getMarkerObj(),
-                mapMatrix = FileManager.getMapMatrix();
+        fileManager.loadFile();
 
-            target.setLength(markerObj.B.length);
+        var markerObj = fileManager.getMarkerObj(),
+            mapMatrix = fileManager.getMapMatrix();
 
-            player = new Player(mapMatrix);
-            player.setPosition(markerObj.P.position);
+        target.setLength(markerObj.B.length);
 
-            for (var i = 0, boxObj; boxObj = markerObj.B[i++];) {
-                var box = new Box(boxObj.id);
-                box.setPosition(boxObj.position);
-                player.bindBox(box);
-                mapManager.setBoxMarkers(box.position);
-            }
+        player = new Player(mapMatrix);
+        player.setPosition(markerObj.P.position);
 
-            mapManager.setMapMatrix(mapMatrix);
-            mapManager.setPlayerMarker(player.position);
-            mapManager.render();
-
-            addListener();
-        };
-
-        var addListener = function() {
-            player.listen('onMove', player.moveControl.bind(
-                player));
-            mapManager.listen('onMatrixChange', mapManager.render
-                .bind(mapManager));
-            target.listen('boxOnTarget', target.addBox.bind(
-                target));
-            target.listen('boxOverTarget', target.removeBox
-                .bind(target));
-        };
-
-        var removeListener = function() {
-            player.remove('onMove', player.moveControl);
-            mapManager.remove('onMatrixChange', mapManager.render);
-            target.remove('boxOnTarget', target.addBox);
-            target.remove('boxOverTarget', target.removeBox);
-        };
-
-        var gameOver = function() {
-            removeListener();
-            gameInit();
-        };
-
-        return {
-            gameInit: gameInit,
-            gameOver: gameOver
+        for (var i = 0, boxObj; boxObj = markerObj.B[i++];) {
+            var box = new Box(boxObj.id);
+            box.setPosition(boxObj.position);
+            player.bindBox(box);
+            mapManager.setBoxMarkers(box.position);
         }
-    })();
 
-    Event.installEvent(gameManager);
-    gameManager.listen('gameOver', gameManager.gameOver);
+        mapManager.setMapMatrix(mapMatrix);
+        mapManager.setPlayerMarker(player.position);
+        mapManager.render();
 
-    var controlManager = (function() {
-        var keydownControler = new ControlManager.KeydownControler();
-        keydownControler.configKey();
-        gameManager.gameInit();
-    })();
+        addListener();
+    };
 
-});
+    var gameOver = function() {
+        removeListener();
+        gameInit();
+    };
+
+    var addListener = function() {
+        //绑定事件
+        player.listen('onMove', player.moveControl.bind(player));
+        mapManager.listen('onMatrixChange', mapManager.render.bind(
+            mapManager));
+        target.listen('boxOnTarget', target.addBox.bind(target));
+        target.listen('boxOverTarget', target.removeBox.bind(target));
+    };
+
+    var removeListener = function() {
+        //解除事件
+        player.remove('onMove', player.moveControl);
+        mapManager.remove('onMatrixChange', mapManager.render);
+        target.remove('boxOnTarget', target.addBox);
+        target.remove('boxOverTarget', target.removeBox);
+    };
+
+    return {
+        gameInit: gameInit,
+        gameOver: gameOver
+    }
+})();
+
+Event.installEvent(gameManager);
+gameManager.listen('gameOver', gameManager.gameOver);
+gameManager.gameInit();

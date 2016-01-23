@@ -1,62 +1,51 @@
-define([
-    'lib/event',
-    'common/counts'
-], function(Event, Counts) {
+var Event = require('.././lib/event.js');
 
-    var keydownCommands = {
-        38: 'moveUp',
-        39: 'moveRight',
-        40: 'moveDown',
-        37: 'moveLeft'
+var keydownControler = function() {
+    Event.installEvent(this);
+
+    this.keydownCommands = {
+        '38': 'moveUp',
+        '39': 'moveRight',
+        '40': 'moveDown',
+        '37': 'moveLeft'
     };
 
-    var KeydownControler = function(commands) {
-        Event.installEvent(this);
-        var timer;
-        document.onkeydown = function(e) {
+};
 
-            var keyCode = e.keyCode,
-                state = keydownCommands[keyCode];
-            if (state) {
-                if (timer) {
-                    return;
-                }
-                timer = setTimeout(function() {
-                    this.trigger('onMove', state);
-                    clearTimeout(timer);
-                    timer = null;
-                }.bind(this), 100);
-            }
+keydownControler.prototype.control = function() {
+    var keypress = require('keypress');
+    keypress(process.stdin);
 
-        }.bind(this);
-    };
-
-    KeydownControler.prototype.configKey = function() {
-        var btn = document.querySelector('[name="button"]');
-
-        btn.onclick = function() {
-            keydownCommands = {};
-            var upValue = Counts.keyCode[document.querySelector(
-                    '[name="up"]').value.toUpperCase()],
-                downValue = Counts.keyCode[document.querySelector(
-                    '[name="down"]').value.toUpperCase()],
-                rightValue = Counts.keyCode[document.querySelector(
-                    '[name="right"]').value.toUpperCase()],
-                leftValue = Counts.keyCode[document.querySelector(
-                    '[name="left"]').value.toUpperCase()];
-
-            if (upValue && downValue && rightValue && leftValue) {
-                keydownCommands[upValue] = 'moveUp';
-                keydownCommands[rightValue] = 'moveRight';
-                keydownCommands[downValue] = 'moveDown';
-                keydownCommands[leftValue] = 'moveLeft';
-            } else {
-                alert('按键配置有误，请重新配置');
-            }
+    process.stdin.on('keypress', function(ch, key) {
+        var transformer = {
+            'up': '38',
+            'down': '40',
+            'right': '39',
+            'left': '37'
         };
-    };
+        if (transformer[key.name]) {
+            onkeydown(transformer[key.name]);
+        }
+        if (key && key.ctrl && key.name == 'c') {
+            process.stdin.pause();
+        }
+    });
 
-    return {
-        KeydownControler: KeydownControler
-    };
-});
+    process.stdin.setRawMode(true);
+    process.stdin.resume();
+
+    var onkeydown = function(e) {
+
+        var keyCode = e.keyCode,
+            state = this.keydownCommands[e];
+
+        if (state) {
+            this.trigger('onMove', state);
+        }
+
+    }.bind(this);
+};
+
+module.exports = {
+    keydownControler: keydownControler
+};
